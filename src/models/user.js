@@ -4,8 +4,7 @@ mongoose.model('user', new Schema({
   _id: Number,
   name: String,
   login: String,
-  auth: {
-    password: String,
-  },
+  password: String,
   avatar: String,
+  accessCount: Number,
 }));

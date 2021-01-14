@@ -58,7 +58,7 @@ module.exports.setAvatar = async function(user, avatar, storage) {
 
     user.avatar = res.Location;
     await user.save();
-  } else if (storage == 'local') {
+  } else if (storage == 'azure') {
     var azure = require('azure-storage');
     var azureConfig = require('./config/azure');
     var files = azure.createFileService(azureConfig);
