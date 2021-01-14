@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-    Logger = require('./logger');
+    Logger = require('./logger'),
+    { Readable } = require('stream');
 
 module.exports.getUser = async function(id) {
   const User = mongoose.model('user');
@@ -61,11 +62,12 @@ module.exports.setAvatar = async function(user, avatar, storage) {
   } else if (storage == 'azure') {
     var azure = require('azure-storage');
     var azureConfig = require('./config/azure');
-    var files = azure.createFileService(azureConfig);
-    var fileStream = new stream.Readable();
+    var files = azure.createFileService(azureConfig.account, azureConfig.key);
 
+    var fileStream = new Readable();
     fileStream.push(content);
     fileStream.push(null);
+
     var result = await files
         .createFileFromStream('users', 'avatars', user.id + '.jpeg', fileStream, content.length);
 
